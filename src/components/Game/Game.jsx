@@ -14,13 +14,9 @@ const Game = () => {
     const [field, setField] = useState(Array(9).fill(''));
 
     const checkWinner = (field) => {
-        for (const pattern of WIN_PATTERNS) {
-            const [a, b, c] = pattern;
-            if (field[a] && field[a] === field[b] && field[a] === field[c]) {
-                return true;
-            }
-        }
-        return false;
+        return WIN_PATTERNS.some(([a, b, c]) => {
+            return field[a] && field[a] === field[b] && field[a] === field[c];
+        });
     };
 
     const handleCellClick = (index) => {
@@ -35,8 +31,7 @@ const Game = () => {
             return;
         }
 
-        const isEmptyCellLeft = newField.includes('');
-        if (!isEmptyCellLeft) {
+        if (!newField.includes('')) {
             setIsDraw(true);
             return;
         }
@@ -53,11 +48,11 @@ const Game = () => {
 
     return (
         <GameLayout
+            field={field}
+            onCellClick={handleCellClick}
             currentPlayer={currentPlayer}
             isGameEnded={isGameEnded}
             isDraw={isDraw}
-            field={field}
-            onCellClick={handleCellClick}
             onReset={resetGame}
         />
     );
